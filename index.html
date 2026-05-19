@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valet Parking Service Request | Advanced Golden Level</title>
+    <style>
+        /* الألوان والهوية البصرية */
+        :root {
+            --primary-gold: #b89742;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f5f5f5;
+            --text-muted: #a0a0a0;
+            --input-bg: #2a2a2a;
+            --input-border: #333;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.95)), url('https://images.pexels.com/photos/1325707/pexels-photo-1325707.jpeg?auto=compress&cs=tinysrgb&w=1920');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 600px;
+            margin: 20px;
+            border-top: 4px solid var(--primary-gold);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-logo {
+            max-width: 140px;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header h1 {
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+            font-size: 22px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 8px rgba(184, 151, 66, 0.3);
+            background-color: #333;
+        }
+
+        /* تنسيق رسالة الخطأ الحمراء والمربع عند الخطأ */
+        .error-msg {
+            color: #ff4d4d;
+            font-size: 11px;
+            margin-top: 5px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .form-control.invalid-field {
+            border-color: #ff4d4d !important;
+            box-shadow: 0 0 5px rgba(255, 77, 77, 0.3) !important;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-direction: row;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        input[type="date"] {
+            font-family: Arial, Helvetica, sans-serif !important;
+            direction: ltr;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(1);
+        }
+
+        input[type="date"]:invalid::-webkit-datetime-edit {
+            color: transparent;
+        }
+
+        input[type="date"]:valid::-webkit-datetime-edit,
+        input[type="date"]:focus::-webkit-datetime-edit {
+            color: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-gold);
+            color: #121212;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(184, 151, 66, 0.2);
+        }
+
+        .submit-btn:hover {
+            background-color: #d4af37;
+            box-shadow: 0 6px 15px rgba(184, 151, 66, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background-color: #555;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid #28a745;
+            color: #28a745;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="header">
+        <img src="logo.png" alt="Advanced Golden Level Logo" class="form-logo">
+        <h1>ADVANCED GOLDEN LEVEL</h1>
+        <p>Premium Valet Parking & Logistics Booking Portal</p>
+    </div>
+
+    <form id="bookingForm" novalidate>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Name of entity / person</label>
+                <input type="text" name="EntityName" class="form-control" required placeholder="Example: Ritz Carlton" 
+                       pattern="^[a-zA-Z\u0600-\u06FF\s]+$" 
+                       oninput="validateRealTime(this)">
+                <span class="error-msg">invalid input</span>
+            </div>
+            <div class="form-group">
+                <label>Customer type</label>
+                <select name="CustomerType" class="form-control" required>
+                    <option value="" disabled selected>Select customer type...</option>
+                    <option value="company">company</option>
+                    <option value="Event organizer">Event organizer</option>
+                    <option value="individual">individual</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Event Start Date</label>
+                <input type="date" id="StartDate" name="StartDate" class="form-control" lang="en-US" required>
+            </div>
+            <div class="form-group">
+                <label>Event End Date</label>
+                <input type="date" id="EndDate" name="EndDate" class="form-control" lang="en-US" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Event Location</label>
+            <input type="url" name="Location" class="form-control" required placeholder="https://maps.google.com/..." 
+                   pattern="https?://.+" 
+                   oninput="validateRealTime(this)">
+            <span class="error-msg">invalid input</span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="Email" class="form-control" required placeholder="email@example.com" 
+                       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                       oninput="validateRealTime(this)">
+                <span class="error-msg">invalid input</span>
+            </div>
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" name="Phone" class="form-control" required placeholder="05xxxxxxxx" 
+                       maxlength="10" pattern="^05[0-9]{8}$" 
+                       oninput="validateRealTime(this)">
+                <span class="error-msg">invalid input</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Expected Car Count</label>
+            <input type="number" name="ExpectedCars" class="form-control" required placeholder="Example: 100" min="1"
+                   oninput="validateRealTime(this)">
+            <span class="error-msg">invalid input</span>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Submit Quotation Request</button>
+    </form>
+
+    <div id="success-message">
+        <strong>Your request was successfully received!</strong><br>
+        A preliminary quotation will be sent to your email address within seconds.
+    </div>
+</div>
+
+<script>
+    const WEBHOOK_URL = "PLACEHOLDER_FOR_N8N_WEBHOOK";
+
+    // دالة الفحص اللحظي (Real-time Validation)
+    function validateRealTime(input) {
+        // 1. المنع اللحظي للحروف/الأرقام الخاطئة
+        if (input.name === 'EntityName') {
+            input.value = input.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, '');
+        } else if (input.name === 'Phone' || input.name === 'ExpectedCars') {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        // 2. إظهار الرسالة الحمراء (invalid input) إذا لم تكتمل الشروط
+        const errorSpan = input.nextElementSibling;
+        if (errorSpan && errorSpan.classList.contains('error-msg')) {
+            if (input.value.length > 0 && !input.checkValidity()) {
+                errorSpan.style.display = 'block';
+                input.classList.add('invalid-field');
+            } else {
+                errorSpan.style.display = 'none';
+                input.classList.remove('invalid-field');
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const startDateInput = document.getElementById('StartDate');
+        const endDateInput = document.getElementById('EndDate');
+
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const todayStr = `${yyyy}-${mm}-${dd}`;
+
+        startDateInput.setAttribute('min', todayStr);
+        endDateInput.setAttribute('min', todayStr);
+
+        startDateInput.addEventListener('change', function() {
+            if (this.value) {
+                endDateInput.setAttribute('min', this.value);
+                if (endDateInput.value && endDateInput.value < this.value) {
+                    endDateInput.value = this.value;
+                }
+            }
+        });
+    });
+
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        
+        const form = e.target;
+        
+        // منع الإرسال تماماً إذا كان هناك أي خطأ في الخانات
+        if (!form.checkValidity()) {
+            // تفعيل التحقق لجميع الخانات لإظهار الرسائل الحمراء للعميل
+            Array.from(form.elements).forEach(input => {
+                if (input.oninput) validateRealTime(input);
+            });
+            return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "Processing request...";
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if(response.ok) {
+                form.style.display = 'none';
+                document.getElementById('success-message').style.display = 'block';
+            } else {
+                alert("An error occurred during submission. Please try again.");
+                btn.disabled = false;
+                btn.innerText = "Submit Quotation Request";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to connect to server. Check n8n Webhook URL.");
+            btn.disabled = false;
+            btn.innerText = "Submit Quotation Request";
+        }
+    });
+</script>
+
+</body>
+</html>
