@@ -245,18 +245,24 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" name="Email" class="form-control" required placeholder="email@example.com" 
-                       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-                       oninput="validateRealTime(this)">
-                <span class="error-msg">invalid input</span>
-            </div>
-            <div class="form-group">
-                <label>Mobile Number</label>
+                <label>Mobile Number (WhatsApp) <span style="color:#ff4d4d;">*</span></label>
                 <input type="tel" name="Phone" class="form-control" required placeholder="05xxxxxxxx" 
                        maxlength="10" pattern="^05[0-9]{8}$" 
                        oninput="validateRealTime(this)">
                 <span class="error-msg">invalid input</span>
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address (Optional)</label>
+                <input type="email" name="Email" class="form-control" placeholder="email@example.com" 
+                       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                       oninput="validateRealTime(this)">
+                <span class="error-msg">invalid input</span>
+                
+                <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="sendEmail" name="SendEmail" value="yes" style="width: 16px; height: 16px; accent-color: var(--primary-gold);">
+                    <label for="sendEmail" style="margin: 0; font-size: 12px; color: #a0a0a0; font-weight: normal; cursor: pointer;">Send a copy to this email</label>
+                </div>
             </div>
         </div>
 
@@ -272,11 +278,12 @@
 
     <div id="success-message">
         <strong>Your request was successfully received!</strong><br>
-        A preliminary quotation will be sent to your email address within seconds.
+        A preliminary quotation will be sent via WhatsApp (and email if selected) within seconds.
     </div>
 </div>
 
 <script>
+    // ضع رابط الـ Webhook الجديد الخاص بسيرفر الـ VPS هنا
     const WEBHOOK_URL = "PLACEHOLDER_FOR_N8N_WEBHOOK";
 
     // دالة الفحص اللحظي (Real-time Validation)
@@ -335,6 +342,15 @@
             Array.from(form.elements).forEach(input => {
                 if (input.oninput) validateRealTime(input);
             });
+            return;
+        }
+
+        // التحقق الإضافي: إذا اختار العميل إرسال نسخة للإيميل، فيجب أن يكون حقل الإيميل ممتلئاً
+        const emailCheckbox = document.getElementById('sendEmail');
+        const emailInput = document.querySelector('input[name="Email"]');
+        if (emailCheckbox.checked && !emailInput.value) {
+            alert("Please enter your email address to receive a copy.");
+            emailInput.focus();
             return;
         }
 
