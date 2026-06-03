@@ -2,39 +2,404 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>طلب خدمة صف السيارات | Advanced Golden Level</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة حجز الفاليه وعربات الجولف | Advanced Golden Level</title>
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #121212; /* لون يتناسب مع هويتك الفاخرة */
+        /* الألوان والهوية البصرية الجديدة (Web App Style) */
+        :root {
+            --primary-gold: #b89742;
+            --gold-hover: #9c7f35;
+            --bg-body: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --input-bg: #f8fafc;
+            --input-border: #e2e8f0;
         }
-        iframe {
-            border: none;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             width: 100%;
-            height: 100%;
+            max-width: 650px;
+            margin: 20px;
+            overflow: hidden; /* لاحتواء الصورة العلوية */
+            border: 1px solid rgba(184, 151, 66, 0.2);
+        }
+
+        /* صورة البانر العلوية (سيارات الجولف/الفاليه) */
+        .form-banner {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://images.unsplash.com/photo-1593504383181-43cb4d2ec4fa?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 4px solid var(--primary-gold);
+            position: relative;
+        }
+
+        .form-banner::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
+        }
+
+        .form-content {
+            padding: 0 40px 40px 40px;
+            position: relative;
+            z-index: 2;
+            margin-top: -40px; /* لرفع المحتوى قليلاً فوق الصورة */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            color: var(--text-dark);
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            text-align: right;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(184, 151, 66, 0.15);
+            background-color: #fff;
+        }
+
+        .error-msg {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .form-control.invalid-field {
+            border-color: #e53e3e !important;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15) !important;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            flex-direction: row;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        input[type="date"] {
+            font-family: inherit !important;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-gold);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(184, 151, 66, 0.3);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 151, 66, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background-color: #cbd5e0;
+            color: #718096;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0fff4;
+            border: 1px solid #c6f6d5;
+            color: #2f855a;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .checkbox-wrapper {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #fffaf0;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #feebc8;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .form-content {
+                padding: 0 25px 25px 25px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <iframe 
-        data-tally-src="https://tally.so/r/QKvPP1?transparentBackground=1" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        marginheight="0" 
-        marginwidth="0" 
-        title="Valet Parking Service Request">
-    </iframe>
+<div class="form-container">
+    <div class="form-banner"></div>
 
-    <script>
-        var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
-    </script>
+    <div class="form-content">
+        <div class="header">
+            <img src="logo.png" alt="Advanced Golden Level Logo" style="max-width: 120px; margin-bottom: 10px;">
+            <h1 style="font-family: Arial, sans-serif;">ADVANCED GOLDEN LEVEL</h1>
+            <p>الخدمات اللوجستية الفاخرة وعربات الجولف الـ VIP</p>
+        </div>
+
+        <form id="bookingForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>اسم الجهة / الشخص</label>
+                    <input type="text" name="EntityName" class="form-control" required placeholder="مثال: فندق الريتز كارلتون" 
+                           pattern="^[a-zA-Z\u0600-\u06FF\s]+$" 
+                           oninput="validateRealTime(this)">
+                    <span class="error-msg">إدخال غير صالح. الرجاء استخدام الحروف فقط.</span>
+                </div>
+                <div class="form-group">
+                    <label>نوع العميل</label>
+                    <select name="CustomerType" class="form-control" required>
+                        <option value="" disabled selected>اختر نوع العميل...</option>
+                        <option value="company">شركة</option>
+                        <option value="Event organizer">منظم فعاليات</option>
+                        <option value="individual">فرد</option>
+                        <option value="Other">أخرى</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>تاريخ بداية الفعالية</label>
+                    <input type="date" id="StartDate" name="StartDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ نهاية الفعالية</label>
+                    <input type="date" id="EndDate" name="EndDate" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>رابط موقع الفعالية (خرائط جوجل)</label>
+                <input type="url" name="Location" class="form-control" required placeholder="https://maps.google.com/..." 
+                       pattern="https?://.+" 
+                       oninput="validateRealTime(this)" style="text-align: left; direction: ltr;">
+                <span class="error-msg">يرجى إدخال رابط صحيح يبدأ بـ http أو https</span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>رقم الجوال (واتساب) <span style="color:#e53e3e;">*</span></label>
+                    <input type="tel" name="Phone" class="form-control" required placeholder="05xxxxxxxx" 
+                           maxlength="10" pattern="^05[0-9]{8}$" 
+                           oninput="validateRealTime(this)" style="text-align: left; direction: ltr;">
+                    <span class="error-msg">رقم جوال غير صحيح. يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>البريد الإلكتروني (اختياري)</label>
+                    <input type="email" name="Email" class="form-control" placeholder="email@example.com" 
+                           pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                           oninput="validateRealTime(this)" style="text-align: left; direction: ltr;">
+                    <span class="error-msg">صيغة البريد الإلكتروني غير صحيحة.</span>
+                    
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="sendEmail" name="SendEmail" value="yes" style="width: 16px; height: 16px; accent-color: var(--primary-gold);">
+                        <label for="sendEmail" style="margin: 0; font-size: 12px; color: var(--text-dark); cursor: pointer;">أرغب باستلام نسخة من العرض عبر الإيميل</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>العدد المتوقع للسيارات / عربات الجولف</label>
+                <input type="number" name="ExpectedCars" class="form-control" required placeholder="مثال: 100" min="1"
+                       oninput="validateRealTime(this)">
+                <span class="error-msg">يرجى إدخال رقم صحيح.</span>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">تأكيد وإصدار عرض السعر</button>
+        </form>
+
+        <div id="success-message">
+            <strong>تم استلام طلبك بنجاح! 🎉</strong><br>
+            جاري معالجة البيانات، سيصلك عرض السعر المبدئي عبر الواتساب خلال لحظات.
+        </div>
+    </div>
+</div>
+
+<script>
+    // ⚠️ لا تنسَ وضع رابط الـ Webhook الخاص بك هنا بين علامتي التنصيص
+    const WEBHOOK_URL = "PLACEHOLDER_FOR_N8N_WEBHOOK";
+
+    function validateRealTime(input) {
+        if (input.name === 'EntityName') {
+            input.value = input.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, '');
+        } else if (input.name === 'Phone' || input.name === 'ExpectedCars') {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        const errorSpan = input.nextElementSibling;
+        if (errorSpan && errorSpan.classList.contains('error-msg')) {
+            if (input.value.length > 0 && !input.checkValidity()) {
+                errorSpan.style.display = 'block';
+                input.classList.add('invalid-field');
+            } else {
+                errorSpan.style.display = 'none';
+                input.classList.remove('invalid-field');
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const startDateInput = document.getElementById('StartDate');
+        const endDateInput = document.getElementById('EndDate');
+
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const todayStr = `${yyyy}-${mm}-${dd}`;
+
+        startDateInput.setAttribute('min', todayStr);
+        endDateInput.setAttribute('min', todayStr);
+
+        startDateInput.addEventListener('change', function() {
+            if (this.value) {
+                endDateInput.setAttribute('min', this.value);
+                if (endDateInput.value && endDateInput.value < this.value) {
+                    endDateInput.value = this.value;
+                }
+            }
+        });
+    });
+
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        
+        const form = e.target;
+        
+        if (!form.checkValidity()) {
+            Array.from(form.elements).forEach(input => {
+                if (input.oninput) validateRealTime(input);
+            });
+            return;
+        }
+
+        const emailCheckbox = document.getElementById('sendEmail');
+        const emailInput = document.querySelector('input[name="Email"]');
+        if (emailCheckbox.checked && !emailInput.value) {
+            alert("الرجاء إدخال البريد الإلكتروني لتلقي نسخة من العرض.");
+            emailInput.focus();
+            return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "جاري تحضير العرض...";
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if(response.ok) {
+                form.style.display = 'none';
+                document.getElementById('success-message').style.display = 'block';
+            } else {
+                alert("حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.");
+                btn.disabled = false;
+                btn.innerText = "تأكيد وإصدار عرض السعر";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("فشل الاتصال بالخادم. يرجى التأكد من رابط الـ Webhook والمحاولة لاحقاً.");
+            btn.disabled = false;
+            btn.innerText = "تأكيد وإصدار عرض السعر";
+        }
+    });
+</script>
 
 </body>
 </html>
