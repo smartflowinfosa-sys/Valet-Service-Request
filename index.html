@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valet & Golf Cart Booking | Advanced Golden Level</title>
+    <title>Valet Booking | Advanced Golden Level</title>
     <style>
-        /* الألوان والهوية البصرية */
         :root {
             --primary-gold: #b89742;
             --gold-hover: #9c7f35;
@@ -42,7 +41,6 @@
             position: relative;
         }
 
-        /* زر تغيير اللغة أعلى يمين/يسار الصفحة */
         .lang-btn {
             position: absolute;
             top: 15px;
@@ -65,13 +63,12 @@
             color: white;
         }
 
-        /* تعديل مكان الزر عند التحويل للعربية */
         html[dir="rtl"] .lang-btn {
             right: auto;
             left: 15px;
         }
 
-        /* صورة عربات الجولف المضافة */
+        /* تعديل اسم الصورة ليتطابق مع الـ PNG وبدون مسافات */
         .top-image {
             width: 100%;
             height: 220px;
@@ -147,9 +144,16 @@
             text-align: right;
         }
 
-        .force-ltr {
+        /* فرض الأرقام الإنجليزية وإخفاء التواريخ المؤقتة */
+        .force-ltr, input[type="date"], input[type="tel"], input[type="number"] {
             direction: ltr !important;
             text-align: left !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
+        /* إخفاء عبارة يوم/شهر/سنة قبل الاختيار */
+        input[type="date"]:invalid::-webkit-datetime-edit {
+            color: transparent;
         }
 
         .form-control:focus {
@@ -180,10 +184,6 @@
 
         .form-row .form-group {
             flex: 1;
-        }
-
-        input[type="date"] {
-            font-family: inherit !important;
         }
 
         .submit-btn {
@@ -260,7 +260,7 @@
 <div class="form-container">
     <button id="langToggle" class="lang-btn">العربية</button>
 
-    <img src="golf cars.jpg" alt="Golf Carts Banner" class="top-image">
+    <img src="golf-cars.png" alt="Golf Carts Banner" class="top-image">
 
     <div class="form-content">
         <div class="header">
@@ -281,7 +281,7 @@
                 <div class="form-group">
                     <label class="i18n" data-en="Customer Type" data-ar="نوع العميل">Customer Type</label>
                     <select name="CustomerType" class="form-control" required>
-                        <option value="" disabled selected class="i18n-opt" data-en="Select customer type..." data-ar="اختر نوع العميل...">Select customer type...</option>
+                        <option value="" disabled selected class="i18n-opt" data-en="" data-ar=""></option>
                         <option value="company" class="i18n-opt" data-en="Company" data-ar="شركة">Company</option>
                         <option value="Event organizer" class="i18n-opt" data-en="Event Organizer" data-ar="منظم فعاليات">Event Organizer</option>
                         <option value="individual" class="i18n-opt" data-en="Individual" data-ar="فرد">Individual</option>
@@ -293,11 +293,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label class="i18n" data-en="Event Start Date" data-ar="تاريخ بداية الفعالية">Event Start Date</label>
-                    <input type="date" id="StartDate" name="StartDate" class="form-control" lang="en-US" required>
+                    <input type="date" id="StartDate" name="StartDate" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label class="i18n" data-en="Event End Date" data-ar="تاريخ نهاية الفعالية">Event End Date</label>
-                    <input type="date" id="EndDate" name="EndDate" class="form-control" lang="en-US" required>
+                    <input type="date" id="EndDate" name="EndDate" class="form-control" required>
                 </div>
             </div>
 
@@ -333,7 +333,7 @@
             </div>
 
             <div class="form-group">
-                <label class="i18n" data-en="Expected Number of Cars / Golf Carts" data-ar="العدد المتوقع للسيارات / عربات الجولف">Expected Number of Cars / Golf Carts</label>
+                <label class="i18n" data-en="Expected Number of Cars" data-ar="العدد المتوقع للسيارات">Expected Number of Cars</label>
                 <input type="number" name="ExpectedCars" class="form-control force-ltr" required min="1"
                        oninput="validateRealTime(this)">
                 <span class="error-msg i18n" data-en="Please enter a valid number." data-ar="يرجى إدخال رقم صحيح.">Please enter a valid number.</span>
@@ -349,10 +349,9 @@
 </div>
 
 <script>
-    // الرابط الثابت للسيرفر
+    // ضع رابط n8n الخاص بك هنا
     const WEBHOOK_URL = "PLACEHOLDER_FOR_N8N_WEBHOOK";
 
-    // 1. نظام تغيير اللغة (Language Toggle System)
     let currentLang = 'en';
     const langToggle = document.getElementById('langToggle');
 
@@ -362,12 +361,10 @@
         document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
         langToggle.innerText = lang === 'ar' ? 'English' : 'العربية';
         
-        // تحديث كل النصوص التي تحتوي على كلاس i18n
         document.querySelectorAll('.i18n').forEach(el => {
             el.innerHTML = el.getAttribute(`data-${lang}`);
         });
         
-        // تحديث القائمة المنسدلة
         document.querySelectorAll('.i18n-opt').forEach(el => {
             el.innerText = el.getAttribute(`data-${lang}`);
         });
@@ -377,7 +374,6 @@
         setLanguage(currentLang === 'en' ? 'ar' : 'en');
     });
 
-    // 2. التحقق اللحظي للإدخال
     function validateRealTime(input) {
         if (input.name === 'EntityName') {
             input.value = input.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, '');
@@ -397,12 +393,10 @@
         }
     }
 
-    // 3. نظام التواريخ الصارم (التحكم برمجياً)
     document.addEventListener('DOMContentLoaded', function() {
         const startDateInput = document.getElementById('StartDate');
         const endDateInput = document.getElementById('EndDate');
 
-        // تحديد الحد الأدنى لتاريخ اليوم
         const today = new Date();
         const yyyy = today.getFullYear();
         const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -412,13 +406,9 @@
         startDateInput.setAttribute('min', todayStr);
         endDateInput.setAttribute('min', todayStr);
 
-        // مراقبة تغيير تاريخ البداية
         startDateInput.addEventListener('change', function() {
             if (this.value) {
-                // منع اختيار تاريخ نهاية قبل تاريخ البداية في التقويم
                 endDateInput.setAttribute('min', this.value);
-                
-                // إذا كان العميل قد اختار تاريخ نهاية مسبقاً، وكان أقدم من البداية الجديدة، نمسحه فوراً
                 if (endDateInput.value && endDateInput.value < this.value) {
                     endDateInput.value = ''; 
                 }
@@ -426,7 +416,6 @@
         });
     });
 
-    // 4. إرسال البيانات
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
         e.preventDefault(); 
         const form = e.target;
@@ -434,7 +423,6 @@
         const startDateVal = document.getElementById('StartDate').value;
         const endDateVal = document.getElementById('EndDate').value;
 
-        // ضابط أمان إضافي: رفض الإرسال تماماً إذا كان تاريخ النهاية أقدم من البداية
         if (startDateVal && endDateVal && endDateVal < startDateVal) {
             alert(currentLang === 'en' ? "Error: End date cannot be before start date!" : "خطأ: لا يمكن أن يكون تاريخ النهاية قبل تاريخ البداية!");
             return;
