@@ -321,8 +321,8 @@
                 <div class="form-group">
                     <label class="i18n" data-en="Email Address (Optional)" data-ar="البريد الإلكتروني (اختياري)">Email Address (Optional)</label>
                     <input type="email" name="Email" class="form-control force-ltr" 
-                           pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-                           oninput="validateRealTime(this)">
+       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+       oninput="validateRealTime(this); document.getElementById('sendEmail').checked = (this.value.trim().length > 0);">
                     <span class="error-msg i18n" data-en="Invalid email format." data-ar="صيغة البريد الإلكتروني غير صحيحة.">Invalid email format.</span>
                     
                     <div class="checkbox-wrapper">
