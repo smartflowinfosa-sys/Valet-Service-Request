@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP Booking | Advanced Golden Level</title>
+    <!-- استدعاء الخطوط الفاخرة -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
@@ -69,7 +70,7 @@
 
         .form-content {
             padding: 40px;
-            margin-top: -30px; /* تداخل الصورة مع المحتوى */
+            margin-top: -30px; 
             position: relative;
             background: #fff;
             border-radius: 20px 20px 16px 16px;
@@ -132,7 +133,6 @@
         }
         html[dir="rtl"] .floating-group label { right: 14px; left: auto; }
 
-        /* رفع العنوان عند التركيز أو وجود نص */
         .floating-group input:focus ~ label,
         .floating-group input:not(:placeholder-shown) ~ label,
         .floating-group select:focus ~ label,
@@ -144,6 +144,24 @@
         .floating-group input:focus, .floating-group select:focus {
             border-color: var(--primary-gold); outline: none;
             box-shadow: 0 0 0 3px rgba(184, 151, 66, 0.15);
+        }
+
+        /* --- إخفاء نصوص التاريخ الافتراضية --- */
+        input[type="date"]::-webkit-datetime-edit-text,
+        input[type="date"]::-webkit-datetime-edit-month-field,
+        input[type="date"]::-webkit-datetime-edit-day-field,
+        input[type="date"]::-webkit-datetime-edit-year-field {
+            color: transparent;
+        }
+        input[type="date"]:focus::-webkit-datetime-edit-text,
+        input[type="date"]:focus::-webkit-datetime-edit-month-field,
+        input[type="date"]:focus::-webkit-datetime-edit-day-field,
+        input[type="date"]:focus::-webkit-datetime-edit-year-field,
+        input[type="date"]:valid::-webkit-datetime-edit-text,
+        input[type="date"]:valid::-webkit-datetime-edit-month-field,
+        input[type="date"]:valid::-webkit-datetime-edit-day-field,
+        input[type="date"]:valid::-webkit-datetime-edit-year-field {
+            color: var(--text-dark) !important;
         }
 
         /* --- التفاعلات الدقيقة (Micro-Interactions) --- */
@@ -170,7 +188,7 @@
         .btn-primary { background: var(--primary-gold); color: white; box-shadow: 0 4px 15px rgba(184, 151, 66, 0.3); }
         .btn-primary:hover { 
             background: var(--gold-hover); transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5); /* Glow Effect */
+            box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5); 
         }
         .btn-primary:disabled { background: #cbd5e0; cursor: not-allowed; box-shadow: none; transform: none; }
 
@@ -212,6 +230,7 @@
         </div>
 
         <form id="bookingForm" novalidate>
+            <!-- الخطوة 1 -->
             <div class="step active" id="step1">
                 <div class="form-row">
                     <div class="floating-group">
@@ -242,14 +261,16 @@
                 </div>
             </div>
 
+            <!-- الخطوة 2 -->
             <div class="step" id="step2">
                 <div class="form-row">
                     <div class="floating-group">
-                        <input type="date" name="StartDate" id="StartDate" class="label-up" required placeholder=" ">
+                        <!-- إضافة lang="en-US" لإجبار التواريخ الإنجليزية -->
+                        <input type="date" lang="en-US" name="StartDate" id="StartDate" class="label-up force-ltr" required placeholder=" ">
                         <label class="i18n" data-en="Start Date" data-ar="تاريخ البداية">Start Date</label>
                     </div>
                     <div class="floating-group">
-                        <input type="date" name="EndDate" id="EndDate" class="label-up" required placeholder=" ">
+                        <input type="date" lang="en-US" name="EndDate" id="EndDate" class="label-up force-ltr" required placeholder=" ">
                         <label class="i18n" data-en="End Date" data-ar="تاريخ النهاية">End Date</label>
                     </div>
                 </div>
@@ -266,19 +287,15 @@
                 </div>
             </div>
 
+            <!-- الخطوة 3 -->
             <div class="step" id="step3">
-                <div class="form-row">
-                    <div class="floating-group">
-                        <input type="tel" name="Phone" id="Phone" class="force-ltr" placeholder=" " maxlength="10" pattern="^05[0-9]{8}$" oninput="validateRealTime(this); clearContactError();">
-                        <label class="i18n" data-en="WhatsApp Number" data-ar="رقم الواتساب">WhatsApp Number</label>
-                        <span class="check-icon">✔</span>
-                    </div>
-                    
-                    <div class="floating-group">
-                        <input type="text" name="WhatsAppUser" id="WhatsAppUser" class="force-ltr" placeholder=" " oninput="clearContactError();">
-                        <label class="i18n" data-en="WhatsApp Username (@)" data-ar="يوزر الواتساب (@)">WhatsApp Username (@)</label>
-                        <span class="check-icon">✔</span>
-                    </div>
+                
+                <!-- حقل التواصل المدمج (رقم واتساب أو يوزر) -->
+                <div class="floating-group">
+                    <input type="text" name="ContactMethod" id="ContactMethod" class="force-ltr" required placeholder=" " oninput="validateContactMethod(this)">
+                    <label class="i18n" data-en="WhatsApp Number (05...) or Username (@...)" data-ar="رقم الواتساب (05...) أو اليوزر (@...)">WhatsApp Number (05...) or Username (@...)</label>
+                    <span class="check-icon">✔</span>
+                    <span class="error-msg i18n" id="contactErrorMsg" data-en="Enter a valid 10-digit number or a valid username." data-ar="أدخل رقم صحيح (10 أرقام) أو يوزر صحيح.">Enter a valid 10-digit number or a valid username.</span>
                 </div>
 
                 <div class="floating-group">
@@ -314,7 +331,6 @@
     const WEBHOOK_URL = "https://n8n-p10bgpahkliy9hghak21zv3e.178.105.219.96.sslip.io/webhook/valet-lead";
     let currentLang = 'en';
 
-    // إعدادات اللغة
     function setLanguage(lang) {
         currentLang = lang;
         document.documentElement.lang = lang;
@@ -324,15 +340,13 @@
         document.querySelectorAll('.i18n').forEach(el => el.innerHTML = el.getAttribute(`data-${lang}`));
         document.querySelectorAll('.i18n-opt').forEach(el => el.innerText = el.getAttribute(`data-${lang}`));
         
-        // تحديث شريط التقدم للاتجاه الصحيح
         updateProgressBar(currentStep - 1);
     }
     document.getElementById('langToggle').addEventListener('click', () => setLanguage(currentLang === 'en' ? 'ar' : 'en'));
 
-    // تفاعلات الحقول (علامة الصح والخطأ)
     function validateRealTime(input) {
         if (input.name === 'EntityName') input.value = input.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, '');
-        else if (input.name === 'Phone' || input.name === 'ExpectedCars') input.value = input.value.replace(/[^0-9]/g, '');
+        else if (input.name === 'ExpectedCars') input.value = input.value.replace(/[^0-9]/g, '');
 
         if (input.value.length > 0 && !input.checkValidity()) {
             input.classList.add('invalid-field');
@@ -340,12 +354,41 @@
             input.classList.remove('invalid-field');
         }
     }
-    function clearContactError() {
-        document.getElementById('Phone').classList.remove('invalid-field');
-        document.getElementById('WhatsAppUser').classList.remove('invalid-field');
+
+    // دالة التحقق الذكية لحقل الواتساب المدمج
+    function validateContactMethod(input) {
+        // منع المسافات والحروف العربية
+        input.value = input.value.replace(/[\s\u0600-\u06FF]/g, '');
+        const val = input.value;
+        const errorSpan = document.getElementById('contactErrorMsg');
+        
+        if (val.length === 0) {
+            input.classList.remove('invalid-field');
+            errorSpan.style.display = 'none';
+            input.setCustomValidity("");
+            return;
+        }
+
+        let isValid = false;
+        // إذا كان يحتوي على أرقام فقط (رقم جوال)
+        if (/^\d+$/.test(val)) {
+            isValid = /^05[0-9]{8}$/.test(val); // يجب أن يبدأ بـ 05 ويكون 10 أرقام
+        } else {
+            // إذا كان يحتوي على حروف (يوزر نيم)
+            isValid = val.length >= 3; // يجب أن يكون 3 حروف على الأقل
+        }
+
+        if (isValid) {
+            input.classList.remove('invalid-field');
+            errorSpan.style.display = 'none';
+            input.setCustomValidity("");
+        } else {
+            input.classList.add('invalid-field');
+            errorSpan.style.display = 'block';
+            input.setCustomValidity("Invalid");
+        }
     }
 
-    // إعداد التواريخ (منع اختيار تواريخ سابقة)
     document.addEventListener('DOMContentLoaded', () => {
         const todayStr = new Date().toISOString().split('T')[0];
         document.getElementById('StartDate').setAttribute('min', todayStr);
@@ -356,7 +399,6 @@
         });
     });
 
-    // --- نظام الخطوات (Wizard) ---
     let currentStep = 1;
     function updateProgressBar(stepIndex) {
         const steps = document.querySelectorAll('.progress-step');
@@ -365,9 +407,6 @@
             else if(idx === stepIndex) { step.classList.add('active'); step.classList.remove('completed'); }
             else { step.classList.remove('completed', 'active'); }
         });
-        const progress = currentLang === 'ar' ? 
-            `calc(100% - ${(stepIndex / (steps.length - 1)) * 100}%)` : 
-            `${(stepIndex / (steps.length - 1)) * 100}%`;
         
         document.getElementById('progressBar').style.width = `${(stepIndex / (steps.length - 1)) * 100}%`;
         if(currentLang === 'ar') {
@@ -380,7 +419,6 @@
     }
 
     function nextStep(step) {
-        // التحقق من صحة حقول الخطوة الحالية قبل الانتقال
         const currentInputs = document.getElementById(`step${step}`).querySelectorAll('input, select');
         let isValid = true;
         currentInputs.forEach(input => {
@@ -408,15 +446,13 @@
         updateProgressBar(currentStep - 1);
     }
 
-    // إرسال البيانات
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
         e.preventDefault(); 
         
-        const phoneInput = document.getElementById('Phone');
-        const userInput = document.getElementById('WhatsAppUser');
-        if (!phoneInput.value.trim() && !userInput.value.trim()) {
-            alert(currentLang === 'en' ? "Please enter WhatsApp Number or Username." : "يجب إدخال رقم الواتساب أو يوزر الواتساب على الأقل.");
-            phoneInput.classList.add('invalid-field'); userInput.classList.add('invalid-field');
+        // التحقق من الحقل المدمج (الواتساب أو اليوزر)
+        const contactInput = document.getElementById('ContactMethod');
+        if (!contactInput.checkValidity()) {
+            contactInput.classList.add('invalid-field');
             return;
         }
 
@@ -434,6 +470,18 @@
 
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
+
+        // --- المعالجة الذكية لفصل الرقم عن اليوزر قبل الإرسال لـ n8n ---
+        const contactVal = data['ContactMethod'];
+        if (/^\d+$/.test(contactVal)) {
+            data['Phone'] = contactVal;
+            data['WhatsAppUser'] = "";
+        } else {
+            data['Phone'] = "";
+            data['WhatsAppUser'] = contactVal;
+        }
+        delete data['ContactMethod']; // إزالة الحقل المدمج لكي لا يتشوش السيرفر
+        // -------------------------------------------------------------
 
         try {
             const response = await fetch(WEBHOOK_URL, {
