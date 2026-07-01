@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valet Booking | Advanced Golden Level</title>
+    <title>VIP Booking | Advanced Golden Level</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary-gold: #b89742;
@@ -12,12 +14,12 @@
             --card-bg: #ffffff;
             --text-dark: #2d3748;
             --text-muted: #718096;
-            --input-bg: #f8fafc;
             --input-border: #e2e8f0;
+            --success-green: #48bb78;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', 'Cairo', sans-serif;
             background-color: var(--bg-body);
             color: var(--text-dark);
             margin: 0;
@@ -26,229 +28,166 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            transition: all 0.3s ease;
         }
 
         .form-container {
             background-color: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 650px;
             margin: 20px;
-            overflow: hidden;
             border: 1px solid rgba(184, 151, 66, 0.2);
             position: relative;
         }
 
         .lang-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
             color: var(--text-dark);
-            border: 2px solid var(--primary-gold);
+            border: 1px solid var(--input-border);
             padding: 6px 14px;
             border-radius: 6px;
-            font-weight: bold;
+            font-weight: 600;
             font-family: inherit;
             cursor: pointer;
             z-index: 10;
-            transition: 0.3s ease;
-            backdrop-filter: blur(5px);
+            transition: 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-
-        .lang-btn:hover {
-            background: var(--primary-gold);
-            color: white;
-        }
-
-        html[dir="rtl"] .lang-btn {
-            right: auto;
-            left: 15px;
-        }
+        html[dir="rtl"] .lang-btn { right: auto; left: 20px; }
+        .lang-btn:hover { background: var(--primary-gold); color: white; border-color: var(--primary-gold); }
 
         .top-image {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
-            display: block;
-            border-bottom: 4px solid var(--primary-gold);
+            border-radius: 16px 16px 0 0;
         }
 
         .form-content {
-            padding: 30px 40px 40px 40px;
+            padding: 40px;
+            margin-top: -30px; /* تداخل الصورة مع المحتوى */
+            position: relative;
+            background: #fff;
+            border-radius: 20px 20px 16px 16px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .form-logo { max-width: 120px; margin-bottom: 15px; }
+        .header h1 { color: var(--primary-gold); margin: 0 0 5px; font-size: 24px; font-weight: 800; }
+        .header p { color: var(--text-muted); font-size: 14px; margin: 0; font-weight: 600; }
 
-        .form-logo {
-            max-width: 120px;
-            margin-bottom: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .header h1 {
-            color: var(--primary-gold);
-            margin-bottom: 5px;
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            font-family: Arial, sans-serif;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        html[dir="rtl"] .form-group {
-            text-align: right;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 14px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 8px;
-            color: var(--text-dark);
-            font-size: 14px;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-
-        html[dir="rtl"] .form-control:not(.force-ltr) {
-            text-align: right;
-        }
-
-        .force-ltr, input[type="date"], input[type="tel"], input[type="number"] {
-            direction: ltr !important;
-            text-align: left !important;
-            font-family: Arial, Helvetica, sans-serif !important;
-        }
-
-        input[type="date"]:invalid::-webkit-datetime-edit {
-            color: transparent;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-gold);
-            box-shadow: 0 0 0 3px rgba(184, 151, 66, 0.15);
-            background-color: #fff;
-        }
-
-        .error-msg {
-            color: #e53e3e;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-            font-weight: 600;
-        }
-
-        .form-control.invalid-field {
-            border-color: #e53e3e !important;
-            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15) !important;
-        }
-
-        .form-row {
+        /* --- شريط التقدم (Progress Bar) --- */
+        .progress-container {
             display: flex;
-            gap: 20px;
-            flex-direction: row;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        .progress-container::before {
+            content: ''; background-color: #e2e8f0; position: absolute;
+            top: 50%; left: 0; transform: translateY(-50%); height: 3px; width: 100%; z-index: 0;
+        }
+        .progress-bar {
+            background-color: var(--primary-gold); position: absolute;
+            top: 50%; left: 0; transform: translateY(-50%); height: 3px; width: 0%; z-index: 1;
+            transition: 0.4s ease;
+        }
+        html[dir="rtl"] .progress-container::before, html[dir="rtl"] .progress-bar { left: auto; right: 0; }
+        
+        .progress-step {
+            background-color: #fff; border: 3px solid #e2e8f0; border-radius: 50%;
+            width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: #a0aec0; z-index: 2; transition: 0.4s ease;
+        }
+        .progress-step.active { border-color: var(--primary-gold); color: var(--primary-gold); }
+        .progress-step.completed { background-color: var(--primary-gold); color: #fff; border-color: var(--primary-gold); }
+
+        /* --- خطوات الاستمارة --- */
+        .step { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- العناوين العائمة (Floating Labels) --- */
+        .form-row { display: flex; gap: 20px; }
+        .floating-group { position: relative; margin-bottom: 25px; width: 100%; }
+        
+        .floating-group input, .floating-group select {
+            width: 100%; padding: 18px 14px 8px; 
+            border: 1px solid var(--input-border); border-radius: 8px;
+            font-size: 15px; font-family: inherit; background: #fff;
+            transition: 0.3s ease; box-sizing: border-box; color: var(--text-dark);
+        }
+        html[dir="rtl"] .floating-group input:not(.force-ltr), html[dir="rtl"] .floating-group select { text-align: right; }
+        .force-ltr { direction: ltr !important; text-align: left !important; font-family: 'Montserrat', sans-serif !important; }
+
+        .floating-group label {
+            position: absolute; top: 14px; left: 14px;
+            font-size: 14px; color: var(--text-muted); font-weight: 600;
+            transition: 0.2s ease; pointer-events: none; background: #fff; padding: 0 4px;
+        }
+        html[dir="rtl"] .floating-group label { right: 14px; left: auto; }
+
+        /* رفع العنوان عند التركيز أو وجود نص */
+        .floating-group input:focus ~ label,
+        .floating-group input:not(:placeholder-shown) ~ label,
+        .floating-group select:focus ~ label,
+        .floating-group select:valid ~ label,
+        .label-up ~ label {
+            top: -10px; font-size: 12px; color: var(--primary-gold); font-weight: 800;
+        }
+        
+        .floating-group input:focus, .floating-group select:focus {
+            border-color: var(--primary-gold); outline: none;
+            box-shadow: 0 0 0 3px rgba(184, 151, 66, 0.15);
         }
 
-        .form-row .form-group {
-            flex: 1;
+        /* --- التفاعلات الدقيقة (Micro-Interactions) --- */
+        .check-icon {
+            position: absolute; top: 15px; right: 15px; color: var(--success-green);
+            font-size: 14px; opacity: 0; transition: 0.3s; pointer-events: none;
         }
+        html[dir="rtl"] .check-icon { right: auto; left: 15px; }
+        
+        .floating-group input:valid:not(:placeholder-shown) { border-color: var(--success-green); }
+        .floating-group input:valid:not(:placeholder-shown) ~ .check-icon { opacity: 1; }
+        
+        .error-msg { color: #e53e3e; font-size: 11px; margin-top: 5px; display: none; font-weight: 600; position: absolute;}
+        .invalid-field { border-color: #e53e3e !important; box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15) !important; }
 
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--primary-gold);
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(184, 151, 66, 0.3);
+        /* --- الأزرار وشارات الثقة --- */
+        .btn-container { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; }
+        .btn {
+            padding: 14px 24px; border-radius: 8px; font-size: 15px; font-weight: 800; font-family: inherit;
+            cursor: pointer; transition: 0.3s ease; text-transform: uppercase; border: none; flex: 1;
         }
+        .btn-back { background: #edf2f7; color: #4a5568; }
+        .btn-back:hover { background: #e2e8f0; }
+        .btn-primary { background: var(--primary-gold); color: white; box-shadow: 0 4px 15px rgba(184, 151, 66, 0.3); }
+        .btn-primary:hover { 
+            background: var(--gold-hover); transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5); /* Glow Effect */
+        }
+        .btn-primary:disabled { background: #cbd5e0; cursor: not-allowed; box-shadow: none; transform: none; }
 
-        .submit-btn:hover {
-            background-color: var(--gold-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(184, 151, 66, 0.4);
-        }
-
-        .submit-btn:disabled {
-            background-color: #cbd5e0;
-            color: #718096;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
+        .trust-signals { text-align: center; margin-top: 20px; border-top: 1px solid #edf2f7; padding-top: 15px; }
+        .trust-signals p { margin: 5px 0; font-size: 12px; color: #718096; font-weight: 600; }
 
         #success-message {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background-color: #f0fff4;
-            border: 1px solid #c6f6d5;
-            color: #2f855a;
-            border-radius: 8px;
-            margin-top: 25px;
-            font-size: 15px;
-            font-weight: 600;
-            line-height: 1.6;
+            display: none; text-align: center; padding: 30px 20px; background-color: #f0fff4;
+            border: 1px solid #c6f6d5; color: #2f855a; border-radius: 12px; font-size: 16px; font-weight: 600; line-height: 1.6;
         }
 
-        .checkbox-wrapper {
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background-color: #fffaf0;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: 1px solid #feebc8;
-        }
+        .checkbox-wrapper { display: flex; align-items: center; gap: 8px; background: #fffaf0; padding: 10px; border-radius: 8px; margin-bottom: 20px;}
 
         @media (max-width: 600px) {
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            .form-content {
-                padding: 25px;
-            }
-            .top-image {
-                height: 160px;
-            }
+            .form-row { flex-direction: column; gap: 0; }
+            .form-content { padding: 25px; }
+            .progress-container { padding: 0 10px; }
         }
     </style>
 </head>
@@ -256,212 +195,236 @@
 
 <div class="form-container">
     <button id="langToggle" class="lang-btn">العربية</button>
-
-    <img src="golf-cars.png" alt="Golf Carts Banner" class="top-image">
+    <img src="golf-cars.png" alt="VIP Services" class="top-image" onerror="this.src='https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80'">
 
     <div class="form-content">
         <div class="header">
-            <img src="logo.png" alt="Advanced Golden Level Logo" class="form-logo">
+            <img src="logo.png" alt="Advanced Golden Level Logo" class="form-logo" onerror="this.style.display='none'">
             <h1>ADVANCED GOLDEN LEVEL</h1>
             <p class="i18n" data-en="Premium VIP Valet & Logistics Services" data-ar="الخدمات اللوجستية الفاخرة وعربات الجولف الـ VIP">Premium VIP Valet & Logistics Services</p>
         </div>
 
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-step active">1</div>
+            <div class="progress-step">2</div>
+            <div class="progress-step">3</div>
+        </div>
+
         <form id="bookingForm" novalidate>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="i18n" data-en="Name of Entity / Person" data-ar="اسم الجهة / الشخص">Name of Entity / Person</label>
-                    <input type="text" name="EntityName" class="form-control" required 
-                           pattern="^[a-zA-Z\u0600-\u06FF\s]+$" 
-                           oninput="validateRealTime(this)">
-                    <span class="error-msg i18n" data-en="Invalid input. Letters only." data-ar="إدخال غير صالح. الرجاء استخدام الحروف فقط.">Invalid input. Letters only.</span>
-                </div>
-                <div class="form-group">
-                    <label class="i18n" data-en="Customer Type" data-ar="نوع العميل">Customer Type</label>
-                    <select name="CustomerType" class="form-control" required>
-                        <option value="" disabled selected class="i18n-opt" data-en="" data-ar=""></option>
-                        <option value="company" class="i18n-opt" data-en="Company" data-ar="شركة">Company</option>
-                        <option value="Event organizer" class="i18n-opt" data-en="Event Organizer" data-ar="منظم فعاليات">Event Organizer</option>
-                        <option value="individual" class="i18n-opt" data-en="Individual" data-ar="فرد">Individual</option>
-                        <option value="Other" class="i18n-opt" data-en="Other" data-ar="أخرى">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="i18n" data-en="Event Start Date" data-ar="تاريخ بداية الفعالية">Event Start Date</label>
-                    <input type="date" id="StartDate" name="StartDate" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label class="i18n" data-en="Event End Date" data-ar="تاريخ نهاية الفعالية">Event End Date</label>
-                    <input type="date" id="EndDate" name="EndDate" class="form-control" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="i18n" data-en="Event Location (Google Maps Link)" data-ar="رابط موقع الفعالية (خرائط جوجل)">Event Location (Google Maps Link)</label>
-                <input type="url" name="Location" class="form-control force-ltr" required 
-                       pattern="https?://.+" 
-                       oninput="validateRealTime(this)">
-                <span class="error-msg i18n" data-en="Please enter a valid URL starting with http or https" data-ar="يرجى إدخال رابط صحيح يبدأ بـ http أو https">Please enter a valid URL starting with http or https</span>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="i18n" data-en="WhatsApp Number" data-ar="رقم الواتساب">WhatsApp Number</label>
-                    <input type="tel" name="Phone" id="Phone" class="form-control force-ltr" 
-                           maxlength="10" pattern="^05[0-9]{8}$" 
-                           oninput="validateRealTime(this); clearContactError();">
-                    <span class="error-msg i18n" data-en="Must start with 05 and be 10 digits." data-ar="يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.">Must start with 05 and be 10 digits.</span>
+            <div class="step active" id="step1">
+                <div class="form-row">
+                    <div class="floating-group">
+                        <input type="text" name="EntityName" id="EntityName" required placeholder=" " pattern="^[a-zA-Z\u0600-\u06FF\s]+$" oninput="validateRealTime(this)">
+                        <label class="i18n" data-en="Name of Entity / Person" data-ar="اسم الجهة / الشخص">Name of Entity / Person</label>
+                        <span class="check-icon">✔</span>
+                        <span class="error-msg i18n" data-en="Letters only." data-ar="الرجاء استخدام الحروف فقط.">Letters only.</span>
+                    </div>
+                    <div class="floating-group">
+                        <select name="CustomerType" id="CustomerType" required>
+                            <option value="" disabled selected hidden></option>
+                            <option value="company" class="i18n-opt" data-en="Company" data-ar="شركة">Company</option>
+                            <option value="Event organizer" class="i18n-opt" data-en="Event Organizer" data-ar="منظم فعاليات">Event Organizer</option>
+                            <option value="individual" class="i18n-opt" data-en="Individual" data-ar="فرد">Individual</option>
+                        </select>
+                        <label class="i18n" data-en="Customer Type" data-ar="نوع العميل">Customer Type</label>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label class="i18n" data-en="WhatsApp Username (@)" data-ar="يوزر الواتساب (@)">WhatsApp Username (@)</label>
-                    <input type="text" name="WhatsAppUser" id="WhatsAppUser" class="form-control force-ltr" 
-                           placeholder="@username"
-                           oninput="clearContactError();">
+                <div class="floating-group">
+                    <input type="url" name="Location" id="Location" class="force-ltr" required placeholder=" " pattern="https?://.+" oninput="validateRealTime(this)">
+                    <label class="i18n" data-en="Event Location (Google Maps)" data-ar="رابط موقع الفعالية (خرائط جوجل)">Event Location (Google Maps)</label>
+                    <span class="check-icon">✔</span>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-primary i18n" data-en="Next Step ➔" data-ar="الخطوة التالية 🡄" onclick="nextStep(1)">Next Step ➔</button>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="i18n" data-en="Email Address (Optional)" data-ar="البريد الإلكتروني (اختياري)">Email Address (Optional)</label>
-                    <input type="email" name="Email" class="form-control force-ltr" 
-                           pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-                           oninput="validateRealTime(this); document.getElementById('sendEmail').checked = (this.value.trim().length > 0);">
-                    <span class="error-msg i18n" data-en="Invalid email format." data-ar="صيغة البريد الإلكتروني غير صحيحة.">Invalid email format.</span>
-                    
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="sendEmail" name="SendEmail" value="yes" style="width: 16px; height: 16px; accent-color: var(--primary-gold);">
-                        <label for="sendEmail" class="i18n" data-en="I want to receive a copy via email" data-ar="أرغب باستلام نسخة من العرض عبر الإيميل" style="margin: 0; font-size: 12px; color: var(--text-dark); cursor: pointer;">I want to receive a copy via email</label>
+            <div class="step" id="step2">
+                <div class="form-row">
+                    <div class="floating-group">
+                        <input type="date" name="StartDate" id="StartDate" class="label-up" required placeholder=" ">
+                        <label class="i18n" data-en="Start Date" data-ar="تاريخ البداية">Start Date</label>
+                    </div>
+                    <div class="floating-group">
+                        <input type="date" name="EndDate" id="EndDate" class="label-up" required placeholder=" ">
+                        <label class="i18n" data-en="End Date" data-ar="تاريخ النهاية">End Date</label>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="floating-group">
+                    <input type="number" name="ExpectedCars" id="ExpectedCars" class="force-ltr" required placeholder=" " min="1" oninput="validateRealTime(this)">
                     <label class="i18n" data-en="Expected Number of Cars" data-ar="العدد المتوقع للسيارات">Expected Number of Cars</label>
-                    <input type="number" name="ExpectedCars" class="form-control force-ltr" required min="1"
-                           oninput="validateRealTime(this)">
-                    <span class="error-msg i18n" data-en="Please enter a valid number." data-ar="يرجى إدخال رقم صحيح.">Please enter a valid number.</span>
+                    <span class="check-icon">✔</span>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-back i18n" data-en="Back" data-ar="السابق" onclick="prevStep(2)">Back</button>
+                    <button type="button" class="btn btn-primary i18n" data-en="Next Step ➔" data-ar="الخطوة التالية 🡄" onclick="nextStep(2)">Next Step ➔</button>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn i18n" id="submitBtn" data-en="Confirm & Generate Quotation" data-ar="تأكيد وإصدار عرض السعر">Confirm & Generate Quotation</button>
+            <div class="step" id="step3">
+                <div class="form-row">
+                    <div class="floating-group">
+                        <input type="tel" name="Phone" id="Phone" class="force-ltr" placeholder=" " maxlength="10" pattern="^05[0-9]{8}$" oninput="validateRealTime(this); clearContactError();">
+                        <label class="i18n" data-en="WhatsApp Number" data-ar="رقم الواتساب">WhatsApp Number</label>
+                        <span class="check-icon">✔</span>
+                    </div>
+                    
+                    <div class="floating-group">
+                        <input type="text" name="WhatsAppUser" id="WhatsAppUser" class="force-ltr" placeholder=" " oninput="clearContactError();">
+                        <label class="i18n" data-en="WhatsApp Username (@)" data-ar="يوزر الواتساب (@)">WhatsApp Username (@)</label>
+                        <span class="check-icon">✔</span>
+                    </div>
+                </div>
+
+                <div class="floating-group">
+                    <input type="email" name="Email" id="Email" class="force-ltr" placeholder=" " pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" oninput="validateRealTime(this); document.getElementById('sendEmail').checked = (this.value.trim().length > 0);">
+                    <label class="i18n" data-en="Email Address (Optional)" data-ar="البريد الإلكتروني (اختياري)">Email Address (Optional)</label>
+                    <span class="check-icon">✔</span>
+                </div>
+
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="sendEmail" name="SendEmail" value="yes" style="accent-color: var(--primary-gold);">
+                    <label for="sendEmail" class="i18n" data-en="I want to receive a copy via email" data-ar="أرغب باستلام نسخة من العرض عبر الإيميل" style="font-size: 13px; font-weight:600; cursor: pointer; margin:0;">I want to receive a copy via email</label>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-back i18n" data-en="Back" data-ar="السابق" onclick="prevStep(3)">Back</button>
+                    <button type="submit" class="btn btn-primary i18n" id="submitBtn" data-en="Confirm & Generate Quotation" data-ar="تأكيد وإصدار عرض السعر">Confirm & Generate Quotation</button>
+                </div>
+                
+                <div class="trust-signals">
+                    <p>🔒 <span class="i18n" data-en="Your data is encrypted and securely processed." data-ar="بياناتك مشفرة ومحمية بالكامل.">Your data is encrypted and securely processed.</span></p>
+                    <p>⚡ <span class="i18n" data-en="Automated quotation will be sent instantly." data-ar="سيتم إرسال عرض السعر الآلي خلال ثوانٍ معدودة.">Automated quotation will be sent instantly.</span></p>
+                </div>
+            </div>
         </form>
 
-        <div id="success-message" class="i18n" data-en="Request received successfully! 🎉<br>Processing data, you will receive the preliminary quotation via WhatsApp shortly." data-ar="تم استلام طلبك بنجاح! 🎉<br>جاري معالجة البيانات، سيصلك عرض السعر المبدئي عبر الواتساب خلال لحظات.">
-            Request received successfully! 🎉<br>Processing data, you will receive the preliminary quotation via WhatsApp shortly.
+        <div id="success-message" class="i18n" data-en="✨ Request received successfully!<br>Processing data, you will receive the premium quotation via WhatsApp shortly." data-ar="✨ تم استلام طلبك بنجاح!<br>جاري معالجة البيانات، سيصلك عرض السعر المبدئي عبر الواتساب خلال لحظات.">
+            ✨ Request received successfully!<br>Processing data, you will receive the premium quotation via WhatsApp shortly.
         </div>
     </div>
 </div>
 
 <script>
     const WEBHOOK_URL = "https://n8n-p10bgpahkliy9hghak21zv3e.178.105.219.96.sslip.io/webhook/valet-lead";
-
     let currentLang = 'en';
-    const langToggle = document.getElementById('langToggle');
 
+    // إعدادات اللغة
     function setLanguage(lang) {
         currentLang = lang;
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-        langToggle.innerText = lang === 'ar' ? 'English' : 'العربية';
+        document.getElementById('langToggle').innerText = lang === 'ar' ? 'English' : 'العربية';
         
-        document.querySelectorAll('.i18n').forEach(el => {
-            el.innerHTML = el.getAttribute(`data-${lang}`);
-        });
+        document.querySelectorAll('.i18n').forEach(el => el.innerHTML = el.getAttribute(`data-${lang}`));
+        document.querySelectorAll('.i18n-opt').forEach(el => el.innerText = el.getAttribute(`data-${lang}`));
         
-        document.querySelectorAll('.i18n-opt').forEach(el => {
-            el.innerText = el.getAttribute(`data-${lang}`);
-        });
+        // تحديث شريط التقدم للاتجاه الصحيح
+        updateProgressBar(currentStep - 1);
     }
+    document.getElementById('langToggle').addEventListener('click', () => setLanguage(currentLang === 'en' ? 'ar' : 'en'));
 
-    langToggle.addEventListener('click', () => {
-        setLanguage(currentLang === 'en' ? 'ar' : 'en');
-    });
-
+    // تفاعلات الحقول (علامة الصح والخطأ)
     function validateRealTime(input) {
-        if (input.name === 'EntityName') {
-            input.value = input.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, '');
-        } else if (input.name === 'Phone' || input.name === 'ExpectedCars') {
-            input.value = input.value.replace(/[^0-9]/g, '');
-        }
+        if (input.name === 'EntityName') input.value = input.value.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, '');
+        else if (input.name === 'Phone' || input.name === 'ExpectedCars') input.value = input.value.replace(/[^0-9]/g, '');
 
-        const errorSpan = input.nextElementSibling;
-        if (errorSpan && errorSpan.classList.contains('error-msg')) {
-            if (input.value.length > 0 && !input.checkValidity()) {
-                errorSpan.style.display = 'block';
-                input.classList.add('invalid-field');
-            } else {
-                errorSpan.style.display = 'none';
-                input.classList.remove('invalid-field');
-            }
+        if (input.value.length > 0 && !input.checkValidity()) {
+            input.classList.add('invalid-field');
+        } else {
+            input.classList.remove('invalid-field');
         }
     }
-
-    // دالة لإزالة اللون الأحمر عن الحقول بمجرد أن يكتب العميل في أحدهما
     function clearContactError() {
         document.getElementById('Phone').classList.remove('invalid-field');
         document.getElementById('WhatsAppUser').classList.remove('invalid-field');
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const startDateInput = document.getElementById('StartDate');
-        const endDateInput = document.getElementById('EndDate');
-
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        const todayStr = `${yyyy}-${mm}-${dd}`;
-
-        startDateInput.setAttribute('min', todayStr);
-        endDateInput.setAttribute('min', todayStr);
-
-        startDateInput.addEventListener('change', function() {
-            if (this.value) {
-                endDateInput.setAttribute('min', this.value);
-                if (endDateInput.value && endDateInput.value < this.value) {
-                    endDateInput.value = ''; 
-                }
-            }
+    // إعداد التواريخ (منع اختيار تواريخ سابقة)
+    document.addEventListener('DOMContentLoaded', () => {
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('StartDate').setAttribute('min', todayStr);
+        document.getElementById('EndDate').setAttribute('min', todayStr);
+        document.getElementById('StartDate').addEventListener('change', function() {
+            document.getElementById('EndDate').setAttribute('min', this.value);
+            if (document.getElementById('EndDate').value < this.value) document.getElementById('EndDate').value = ''; 
         });
     });
 
+    // --- نظام الخطوات (Wizard) ---
+    let currentStep = 1;
+    function updateProgressBar(stepIndex) {
+        const steps = document.querySelectorAll('.progress-step');
+        steps.forEach((step, idx) => {
+            if(idx < stepIndex) { step.classList.add('completed'); step.classList.remove('active'); }
+            else if(idx === stepIndex) { step.classList.add('active'); step.classList.remove('completed'); }
+            else { step.classList.remove('completed', 'active'); }
+        });
+        const progress = currentLang === 'ar' ? 
+            `calc(100% - ${(stepIndex / (steps.length - 1)) * 100}%)` : 
+            `${(stepIndex / (steps.length - 1)) * 100}%`;
+        
+        document.getElementById('progressBar').style.width = `${(stepIndex / (steps.length - 1)) * 100}%`;
+        if(currentLang === 'ar') {
+            document.getElementById('progressBar').style.right = '0';
+            document.getElementById('progressBar').style.left = 'auto';
+        } else {
+            document.getElementById('progressBar').style.left = '0';
+            document.getElementById('progressBar').style.right = 'auto';
+        }
+    }
+
+    function nextStep(step) {
+        // التحقق من صحة حقول الخطوة الحالية قبل الانتقال
+        const currentInputs = document.getElementById(`step${step}`).querySelectorAll('input, select');
+        let isValid = true;
+        currentInputs.forEach(input => {
+            if(!input.checkValidity()) {
+                input.classList.add('invalid-field');
+                isValid = false;
+            }
+        });
+        
+        if(!isValid) {
+            alert(currentLang === 'en' ? "Please fill all required fields correctly." : "يرجى تعبئة جميع الحقول المطلوبة بشكل صحيح.");
+            return;
+        }
+
+        document.getElementById(`step${step}`).classList.remove('active');
+        currentStep = step + 1;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        updateProgressBar(currentStep - 1);
+    }
+
+    function prevStep(step) {
+        document.getElementById(`step${step}`).classList.remove('active');
+        currentStep = step - 1;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        updateProgressBar(currentStep - 1);
+    }
+
+    // إرسال البيانات
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
         e.preventDefault(); 
-        const form = e.target;
         
-        const startDateVal = document.getElementById('StartDate').value;
-        const endDateVal = document.getElementById('EndDate').value;
-
-        if (startDateVal && endDateVal && endDateVal < startDateVal) {
-            alert(currentLang === 'en' ? "Error: End date cannot be before start date!" : "خطأ: لا يمكن أن يكون تاريخ النهاية قبل تاريخ البداية!");
-            return;
-        }
-
-        // --- شرط التحقق الجديد: الواتساب أو اليوزر ---
         const phoneInput = document.getElementById('Phone');
         const userInput = document.getElementById('WhatsAppUser');
-        
         if (!phoneInput.value.trim() && !userInput.value.trim()) {
-            alert(currentLang === 'en' ? "Please enter a WhatsApp Number or Username to receive the quotation." : "عفواً، يجب إدخال رقم الواتساب أو يوزر الواتساب على الأقل لضمان وصول عرض السعر.");
-            phoneInput.classList.add('invalid-field');
-            userInput.classList.add('invalid-field');
-            return;
-        }
-
-        if (!form.checkValidity()) {
-            Array.from(form.elements).forEach(input => {
-                if (input.oninput) validateRealTime(input);
-            });
+            alert(currentLang === 'en' ? "Please enter WhatsApp Number or Username." : "يجب إدخال رقم الواتساب أو يوزر الواتساب على الأقل.");
+            phoneInput.classList.add('invalid-field'); userInput.classList.add('invalid-field');
             return;
         }
 
         const emailCheckbox = document.getElementById('sendEmail');
-        const emailInput = document.querySelector('input[name="Email"]');
+        const emailInput = document.getElementById('Email');
         if (emailCheckbox.checked && !emailInput.value) {
-            alert(currentLang === 'en' ? "Please enter your email to receive a copy." : "الرجاء إدخال البريد الإلكتروني لتلقي نسخة من العرض.");
-            emailInput.focus();
+            alert(currentLang === 'en' ? "Please enter your email." : "الرجاء إدخال البريد الإلكتروني لتلقي نسخة.");
+            emailInput.classList.add('invalid-field');
             return;
         }
 
@@ -469,7 +432,7 @@
         btn.disabled = true;
         btn.innerText = currentLang === 'en' ? "Processing..." : "جاري تحضير العرض...";
 
-        const formData = new FormData(form);
+        const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
         try {
@@ -480,16 +443,12 @@
             });
 
             if(response.ok) {
-                form.style.display = 'none';
+                document.getElementById('bookingForm').style.display = 'none';
+                document.querySelector('.progress-container').style.display = 'none';
                 document.getElementById('success-message').style.display = 'block';
-            } else {
-                alert(currentLang === 'en' ? "Submission error. Try again." : "حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.");
-                btn.disabled = false;
-                btn.innerText = btn.getAttribute(`data-${currentLang}`);
-            }
+            } else { throw new Error('Network response was not ok'); }
         } catch (error) {
-            console.error("Error:", error);
-            alert(currentLang === 'en' ? "Server connection failed." : "فشل الاتصال بالخادم.");
+            alert(currentLang === 'en' ? "Submission error. Try again." : "فشل الاتصال بالخادم. يرجى المحاولة مرة أخرى.");
             btn.disabled = false;
             btn.innerText = btn.getAttribute(`data-${currentLang}`);
         }
