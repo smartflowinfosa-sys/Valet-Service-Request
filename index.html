@@ -68,7 +68,6 @@
             left: 15px;
         }
 
-        /* تعديل اسم الصورة ليتطابق مع الـ PNG وبدون مسافات */
         .top-image {
             width: 100%;
             height: 220px;
@@ -144,14 +143,12 @@
             text-align: right;
         }
 
-        /* فرض الأرقام الإنجليزية وإخفاء التواريخ المؤقتة */
         .force-ltr, input[type="date"], input[type="tel"], input[type="number"] {
             direction: ltr !important;
             text-align: left !important;
             font-family: Arial, Helvetica, sans-serif !important;
         }
 
-        /* إخفاء عبارة يوم/شهر/سنة قبل الاختيار */
         input[type="date"]:invalid::-webkit-datetime-edit {
             color: transparent;
         }
@@ -311,18 +308,27 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label><span class="i18n" data-en="Mobile Number (WhatsApp)" data-ar="رقم الجوال (واتساب)">Mobile Number (WhatsApp)</span> <span style="color:#e53e3e;">*</span></label>
-                    <input type="tel" name="Phone" class="form-control force-ltr" required 
+                    <label class="i18n" data-en="WhatsApp Number" data-ar="رقم الواتساب">WhatsApp Number</label>
+                    <input type="tel" name="Phone" id="Phone" class="form-control force-ltr" 
                            maxlength="10" pattern="^05[0-9]{8}$" 
-                           oninput="validateRealTime(this)">
-                    <span class="error-msg i18n" data-en="Invalid mobile number. Must start with 05 and be 10 digits." data-ar="رقم جوال غير صحيح. يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.">Invalid mobile number. Must start with 05 and be 10 digits.</span>
+                           oninput="validateRealTime(this); clearContactError();">
+                    <span class="error-msg i18n" data-en="Must start with 05 and be 10 digits." data-ar="يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.">Must start with 05 and be 10 digits.</span>
                 </div>
                 
                 <div class="form-group">
+                    <label class="i18n" data-en="WhatsApp Username (@)" data-ar="يوزر الواتساب (@)">WhatsApp Username (@)</label>
+                    <input type="text" name="WhatsAppUser" id="WhatsAppUser" class="form-control force-ltr" 
+                           placeholder="@username"
+                           oninput="clearContactError();">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
                     <label class="i18n" data-en="Email Address (Optional)" data-ar="البريد الإلكتروني (اختياري)">Email Address (Optional)</label>
                     <input type="email" name="Email" class="form-control force-ltr" 
-       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-       oninput="validateRealTime(this); document.getElementById('sendEmail').checked = (this.value.trim().length > 0);">
+                           pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                           oninput="validateRealTime(this); document.getElementById('sendEmail').checked = (this.value.trim().length > 0);">
                     <span class="error-msg i18n" data-en="Invalid email format." data-ar="صيغة البريد الإلكتروني غير صحيحة.">Invalid email format.</span>
                     
                     <div class="checkbox-wrapper">
@@ -330,13 +336,13 @@
                         <label for="sendEmail" class="i18n" data-en="I want to receive a copy via email" data-ar="أرغب باستلام نسخة من العرض عبر الإيميل" style="margin: 0; font-size: 12px; color: var(--text-dark); cursor: pointer;">I want to receive a copy via email</label>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="i18n" data-en="Expected Number of Cars" data-ar="العدد المتوقع للسيارات">Expected Number of Cars</label>
-                <input type="number" name="ExpectedCars" class="form-control force-ltr" required min="1"
-                       oninput="validateRealTime(this)">
-                <span class="error-msg i18n" data-en="Please enter a valid number." data-ar="يرجى إدخال رقم صحيح.">Please enter a valid number.</span>
+                <div class="form-group">
+                    <label class="i18n" data-en="Expected Number of Cars" data-ar="العدد المتوقع للسيارات">Expected Number of Cars</label>
+                    <input type="number" name="ExpectedCars" class="form-control force-ltr" required min="1"
+                           oninput="validateRealTime(this)">
+                    <span class="error-msg i18n" data-en="Please enter a valid number." data-ar="يرجى إدخال رقم صحيح.">Please enter a valid number.</span>
+                </div>
             </div>
 
             <button type="submit" class="submit-btn i18n" id="submitBtn" data-en="Confirm & Generate Quotation" data-ar="تأكيد وإصدار عرض السعر">Confirm & Generate Quotation</button>
@@ -349,7 +355,6 @@
 </div>
 
 <script>
-    // ضع رابط n8n الخاص بك هنا
     const WEBHOOK_URL = "https://n8n-p10bgpahkliy9hghak21zv3e.178.105.219.96.sslip.io/webhook/valet-lead";
 
     let currentLang = 'en';
@@ -393,6 +398,12 @@
         }
     }
 
+    // دالة لإزالة اللون الأحمر عن الحقول بمجرد أن يكتب العميل في أحدهما
+    function clearContactError() {
+        document.getElementById('Phone').classList.remove('invalid-field');
+        document.getElementById('WhatsAppUser').classList.remove('invalid-field');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const startDateInput = document.getElementById('StartDate');
         const endDateInput = document.getElementById('EndDate');
@@ -425,6 +436,17 @@
 
         if (startDateVal && endDateVal && endDateVal < startDateVal) {
             alert(currentLang === 'en' ? "Error: End date cannot be before start date!" : "خطأ: لا يمكن أن يكون تاريخ النهاية قبل تاريخ البداية!");
+            return;
+        }
+
+        // --- شرط التحقق الجديد: الواتساب أو اليوزر ---
+        const phoneInput = document.getElementById('Phone');
+        const userInput = document.getElementById('WhatsAppUser');
+        
+        if (!phoneInput.value.trim() && !userInput.value.trim()) {
+            alert(currentLang === 'en' ? "Please enter a WhatsApp Number or Username to receive the quotation." : "عفواً، يجب إدخال رقم الواتساب أو يوزر الواتساب على الأقل لضمان وصول عرض السعر.");
+            phoneInput.classList.add('invalid-field');
+            userInput.classList.add('invalid-field');
             return;
         }
 
